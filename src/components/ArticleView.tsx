@@ -1,6 +1,10 @@
-import { useEffect } from "react";
-import { X, ExternalLink, Star, MailOpen, Mail, Type, ZoomIn, ZoomOut, Compass } from "lucide-react";
+import { useEffect, useState } from "react";
+import { 
+  X, ExternalLink, Star, MailOpen, Mail, Type, ZoomIn, ZoomOut, Compass, 
+  Loader2, BookOpen, Sparkles, AlertTriangle, RefreshCw, FileText 
+} from "lucide-react";
 import { FeedItem, AppSettings } from "../types";
+import { fetchAndParseArticle, FullArticleResult } from "../utils/fullTextFetcher";
 
 interface ArticleViewProps {
   article: FeedItem | null;
@@ -19,6 +23,19 @@ export default function ArticleView({
   settings,
   onChangeSettings,
 }: ArticleViewProps) {
+  const [readabilityStatus, setReadabilityStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [readabilityData, setReadabilityData] = useState<FullArticleResult | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [activeTab, setActiveTab] = useState<"feed" | "full">("feed");
+
+  // Reset readability states when active article changes
+  useEffect(() => {
+    setReadabilityStatus("idle");
+    setReadabilityData(null);
+    setErrorMessage("");
+    setActiveTab("feed");
+  }, [article?.id]);
+
   // Bind Escape key to close the drawer easily
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -58,13 +75,26 @@ export default function ArticleView({
     }
   };
 
+  const handleLoadReadability = async () => {
+    if (!article?.link) return;
+    setReadabilityStatus("loading");
+    setActiveTab("full");
+    try {
+      const parsed = await fetchAndParseArticle(article.link);
+      setReadabilityData(parsed);
+      setReadabilityStatus("success");
+    } catch (err: any) {
+      console.error(err);
+      setReadabilityStatus("error");
+      setErrorMessage(err.message || "Could not retrieve web article content.");
+    }
+  };
+
   // Determine custom body colors based on settings.theme
   const getThemeClass = () => {
     switch (settings.theme) {
       case "warm":
         return "bg-warm-bg text-warm-text";
-      case "dark":
-        return "bg-neutral-900 text-neutral-150";
       default:
         return "bg-m3-surface text-m3-on-surface";
     }
@@ -73,7 +103,7 @@ export default function ArticleView({
   const getBorderColor = () => {
     return settings.theme === "warm" 
       ? "border-warm-border" 
-      : (settings.theme === "dark" ? "border-neutral-800" : "border-m3-outline-variant");
+      : "border-m3-outline-variant";
   };
 
   const getContentFontClass = () => {
@@ -243,32 +273,117 @@ export default function ArticleView({
             </div>
           )}
 
+          {/* Interactive Navigation/Distillation Tabs */}
+          <div className="flex items-center gap-2 border-b border-m3-outline-variant dark:border-neutral-800 pb-3 mt-1 text-xs">
+            <button
+              id="btn-tab-feed"
+              onClick={() => setActiveTab("feed")}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${
+                activeTab === "feed"
+                  ? "bg-indigo-600 text-white shadow-xs"
+                  : "bg-m3-surface-variant text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-outline-variant/60 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-750"
+              }`}
+            >
+              <FileText size={13} />
+              Feed Summary
+            </button>
+            <button
+              id="btn-tab-readability"
+              onClick={readabilityStatus === "success" ? () => setActiveTab("full") : handleLoadReadability}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg font-medium transition-all cursor-pointer ${
+                activeTab === "full"
+                  ? "bg-indigo-600 text-white shadow-xs"
+                  : "bg-m3-surface-variant text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-outline-variant/60 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-750"
+              }`}
+            >
+              {readabilityStatus === "loading" ? (
+                <Loader2 size={13} className="animate-spin text-indigo-500" />
+              ) : (
+                <BookOpen size={13} />
+              )}
+              {readabilityStatus === "loading" ? "Distilling..." : "De-cluttered Article"}
+              {readabilityStatus !== "success" && readabilityStatus !== "loading" && (
+                <Sparkles size={11} className="text-amber-500 animate-pulse ml-0.5" />
+              )}
+            </button>
+          </div>
+
           {/* Core Content Box with dynamically tailored serif reading classes */}
           <div className={`rss-content leading-relaxed ${getContentFontClass()} ${getFontSizeClass()}`}>
-            {article.content ? (
-              // Safely render the RSS content
-              <div dangerouslySetInnerHTML={{ __html: article.content }} />
-            ) : article.contentSnippet ? (
-              // Fallback to brief text snippet
-              <div className="space-y-4">
-                <p>{article.contentSnippet}</p>
-                <div className="p-4 bg-m3-surface-variant dark:bg-neutral-800 rounded-lg border border-m3-outline-variant text-xs text-m3-on-surface-variant flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <span>This article only provided a short summary in its RSS XML feed.</span>
-                  <a
-                    href={article.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    referrerPolicy="no-referrer"
-                    className="font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
-                  >
-                    Load Full Story Webpage <ExternalLink size={12} />
-                  </a>
+            {activeTab === "feed" ? (
+              article.content ? (
+                // Safely render the RSS content
+                <div id="reader-content" dangerouslySetInnerHTML={{ __html: article.content }} />
+              ) : article.contentSnippet ? (
+                // Fallback to brief text snippet
+                <div className="space-y-4">
+                  <p>{article.contentSnippet}</p>
+                  <div className="p-4 bg-m3-surface-variant dark:bg-neutral-800 rounded-lg border border-m3-outline-variant text-xs text-m3-on-surface-variant flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <span>This article only provided a short summary in its RSS XML feed.</span>
+                    <button
+                      onClick={handleLoadReadability}
+                      className="font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline flex items-center gap-1.5 cursor-pointer bg-transparent border-none p-0 inline-flex"
+                    >
+                      Load Full Story Webpage (Readability) <Sparkles size={12} className="text-amber-500" />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                // Ultimate blank state
+                <div className="text-center py-6 text-neutral-400 italic text-xs">
+                  No description or body remains in this feed item, inspect via the direct linkage.
+                </div>
+              )
             ) : (
-              // Ultimate blank state
-              <div className="text-center py-6 text-neutral-400 italic text-xs">
-                No description or body remains in this feed item, inspect via the direct linkage.
+              // Readability full view
+              <div>
+                {readabilityStatus === "loading" && (
+                  <div className="flex flex-col items-center justify-center py-12 text-center space-y-3">
+                    <Loader2 className="animate-spin text-indigo-600 dark:text-indigo-400" size={32} />
+                    <p className="text-xs text-neutral-500 animate-pulse">
+                      Downloading Webpage HTML and filtering templates via Mozilla Readability...
+                    </p>
+                  </div>
+                )}
+                
+                {readabilityStatus === "success" && readabilityData && (
+                  <div id="reader-content" dangerouslySetInnerHTML={{ __html: readabilityData.content }} />
+                )}
+                
+                {readabilityStatus === "error" && (
+                  <div className="p-5 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-100 dark:border-red-900/30 space-y-3 text-xs">
+                    <div className="flex items-center gap-2 text-red-600">
+                      <AlertTriangle size={16} />
+                      <strong className="font-semibold">Decluttering Failed</strong>
+                    </div>
+                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                      Could not fetch full webpage content through the CORS proxy. This happens when the source website blocks proxies or is heavily secured.
+                    </p>
+                    <div className="flex items-center gap-2.5 pt-1">
+                      <button
+                        onClick={handleLoadReadability}
+                        className="px-3 py-1.5 bg-indigo-605 text-white bg-indigo-600 hover:bg-indigo-700 font-semibold rounded cursor-pointer flex items-center gap-1 border-none"
+                      >
+                        <RefreshCw size={11} /> Retry Fetch
+                      </button>
+                      <button
+                        onClick={() => setActiveTab("feed")}
+                        className="px-3 py-1.5 bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 rounded font-semibold text-neutral-800 dark:text-neutral-200 cursor-pointer border-none"
+                      >
+                        Back to RSS Summary
+                      </button>
+                      <a
+                        href={article.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        referrerPolicy="no-referrer"
+                        className="text-indigo-600 hover:underline inline-flex items-center gap-1 font-semibold ml-auto"
+                      >
+                        Open Website <ExternalLink size={12} />
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

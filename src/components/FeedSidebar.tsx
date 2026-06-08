@@ -39,6 +39,9 @@ interface FeedSidebarProps {
   // Layout Controls
   activeLayout: ViewLayout;
   onChangeLayout: (layout: ViewLayout) => void;
+
+  // Cache Cleanup
+  onClearExpiredCache: () => void;
 }
 
 export default function FeedSidebar({
@@ -62,7 +65,8 @@ export default function FeedSidebar({
   settings,
   onChangeSettings,
   activeLayout,
-  onChangeLayout
+  onChangeLayout,
+  onClearExpiredCache
 }: FeedSidebarProps) {
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
   const [showReaderStyles, setShowReaderStyles] = useState(true);
@@ -101,17 +105,6 @@ export default function FeedSidebar({
           itemActive: "bg-indigo-600/10 text-indigo-905 border-l-2 border-indigo-600 font-semibold",
           normalText: "text-[#5D554D]",
           badge: "bg-indigo-600/10 text-indigo-800 border border-indigo-600/15"
-        };
-      case "dark":
-        return {
-          aside: "bg-[#0b0f19]/95 text-slate-300 border-slate-800/80 matches-dark",
-          header: "border-slate-800/80 bg-[#060911]",
-          titleText: "text-slate-100",
-          footer: "border-slate-800/80 bg-[#060911]/80",
-          itemHover: "hover:bg-slate-850 hover:text-white",
-          itemActive: "bg-indigo-500/15 text-indigo-300 border-l-2 border-indigo-505 font-semibold",
-          normalText: "text-slate-400",
-          badge: "bg-indigo-500/10 text-indigo-400 border border-indigo-500/10"
         };
       default: // light
         return {
@@ -404,10 +397,12 @@ export default function FeedSidebar({
               className={`w-full flex items-center justify-between text-[11px] font-bold uppercase tracking-wider mb-2 text-left cursor-pointer hover:opacity-80 transition-opacity ${st.normalText}`}
             >
               <span className="flex items-center gap-1.5">
-                <SlidersHorizontal size={12} className="text-indigo-600 dark:text-indigo-400" />
-                Reader View Styles
+                <Settings size={12} className="text-indigo-600 dark:text-indigo-400" />
+                SETTINGS
               </span>
-              <span>{showReaderStyles ? "Collapse" : "Expand"}</span>
+              <span className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                {showReaderStyles ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+              </span>
             </button>
 
             {showReaderStyles && (
@@ -422,7 +417,7 @@ export default function FeedSidebar({
                       onClick={() => onChangeLayout("list")}
                       className={`flex-1 py-1 text-[10px] font-bold rounded flex items-center justify-center gap-1 cursor-pointer transition-colors ${
                         activeLayout === "list" 
-                          ? (settings.theme === "warm" ? "bg-[#FAF6EE] text-[#5D554D] shadow-xs font-bold" : "bg-m3-surface dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs font-bold") 
+                          ? (settings.theme === "warm" ? "bg-[#FAF6EE] text-[#5D554D] shadow-xs font-bold" : "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs font-bold") 
                           : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                       }`}
                       title="List View"
@@ -433,12 +428,47 @@ export default function FeedSidebar({
                       onClick={() => onChangeLayout("grid")}
                       className={`flex-1 py-1 text-[10px] font-bold rounded flex items-center justify-center gap-1 cursor-pointer transition-colors ${
                         activeLayout === "grid" 
-                          ? (settings.theme === "warm" ? "bg-[#FAF6EE] text-[#5D554D] shadow-xs font-bold" : "bg-m3-surface dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs font-bold") 
+                          ? (settings.theme === "warm" ? "bg-[#FAF6EE] text-[#5D554D] shadow-xs font-bold" : "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs font-bold") 
                           : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                       }`}
                       title="Grid View"
                     >
                       <Grid size={11} /> Grid
+                    </button>
+                  </div>
+                </div>
+
+                {/* 1.5. Theme Mode Selection Row */}
+                <div id="theme-mode-section" className={`space-y-1.5 pt-2 border-t ${
+                  settings.theme === "warm" ? "border-[#E5DAC0]/60" : "border-m3-outline-variant/60"
+                }`}>
+                  <span className={`text-[10px] font-semibold block ${st.normalText}`}>Theme Mode</span>
+                  <div className={`flex rounded p-0.5 border ${
+                    settings.theme === "warm" ? "bg-[#EDE5D3] border-[#E5DAC0]" : "bg-m3-surface-variant border-m3-outline-variant"
+                  }`}>
+                    <button
+                      id="theme-btn-light"
+                      onClick={() => onChangeSettings({ ...settings, theme: "light" })}
+                      className={`flex-1 py-1 text-[10px] font-bold rounded flex items-center justify-center gap-1 cursor-pointer transition-colors ${
+                        (settings.theme !== "warm") 
+                          ? "bg-white text-indigo-600 shadow-xs font-bold" 
+                          : "text-slate-400 hover:text-slate-600"
+                      }`}
+                      title="Light Mode"
+                    >
+                      Light
+                    </button>
+                    <button
+                      id="theme-btn-warm"
+                      onClick={() => onChangeSettings({ ...settings, theme: "warm" })}
+                      className={`flex-1 py-1 text-[10px] font-bold rounded flex items-center justify-center gap-1 cursor-pointer transition-colors ${
+                        settings.theme === "warm" 
+                          ? "bg-[#FAF6EE] text-[#5D554D] shadow-xs font-bold" 
+                          : "text-slate-400 hover:text-slate-600"
+                      }`}
+                      title="Warm Mode"
+                    >
+                      Warm
                     </button>
                   </div>
                 </div>
@@ -516,6 +546,28 @@ export default function FeedSidebar({
                     {settings.useClientCorsProxy 
                       ? "Standard ES6 Web APIs & IndexedDB cache" 
                       : "Full-stack server parser background service"}
+                  </p>
+                </div>
+
+                {/* 4. Cache Maintenance Option */}
+                <div className={`space-y-1.5 pt-2 border-t ${
+                  settings.theme === "warm" ? "border-[#E5DAC0]/60" : "border-m3-outline-variant/60 dark:border-slate-800/50"
+                }`}>
+                  <span className={`text-[10px] font-semibold block ${st.normalText}`}>Cache Maintenance</span>
+                  <button
+                    onClick={onClearExpiredCache}
+                    className={`w-full py-2 px-3 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                      settings.theme === "warm"
+                        ? "bg-[#EDE5D3] hover:bg-[#FAF6EE] text-[#5D554D] border border-[#E5DAC0]"
+                        : "bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900 border border-indigo-150 dark:border-indigo-900/60 text-indigo-650 dark:text-indigo-400"
+                    }`}
+                    title="Clear Expired Cache"
+                  >
+                    <Trash2 size={12} />
+                    Clear Expired Cache
+                  </button>
+                  <p className="text-[9px] text-slate-400 dark:text-slate-500 leading-tight">
+                    Removes articles older than 30 days from free IndexedDB cache memory
                   </p>
                 </div>
               </div>

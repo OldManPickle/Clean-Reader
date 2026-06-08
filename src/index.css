@@ -56,56 +56,82 @@ html, body {
 
 /* High-quality styled RSS content elements so articles look gorgeous & read like books */
 .rss-content {
-  line-height: 1.75;
+  line-height: 1.8;
+  letter-spacing: -0.003em;
+}
+
+#reader-content {
+  font-weight: 400;
+  color: #1a1a1a;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Warm theme reading state override */
+[data-theme='warm'] #reader-content {
+  color: #2D2A26 !important;
 }
 
 .rss-content p {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.4rem;
+  font-size: 1.05rem;
 }
 
 .rss-content a {
-  color: #2563eb;
+  color: #3b82f6;
   text-decoration: underline;
   text-underline-offset: 4px;
+  font-weight: 500;
 }
 
 .rss-content a:hover {
-  color: #1d4ed8;
+  color: #2563eb;
 }
 
 .rss-content img {
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   max-width: 100%;
   height: auto;
-  margin: 1.5rem auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 2rem auto;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  display: block;
 }
 
 .rss-content blockquote {
-  border-left: 4px solid #d1d5db;
-  padding-left: 1.25rem;
+  border-left: 4px solid #6d8aa5;
+  padding-left: 1.5rem;
   font-style: italic;
-  color: #4b5563;
-  margin: 1.5rem 0;
+  color: #4a5568;
+  margin: 2rem 0;
+  font-size: 1.125rem;
+  line-height: 1.6;
 }
 
 .rss-content h1, .rss-content h2, .rss-content h3, .rss-content h4 {
   font-family: var(--font-sans);
-  font-weight: 600;
-  color: #1f2937;
+  font-weight: 700;
+  color: #111111;
   letter-spacing: -0.025em;
-  margin-top: 1.75rem;
-  margin-bottom: 0.75rem;
+  margin-top: 2.25rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
 }
 
-.rss-content h1 { font-size: 1.5rem; }
-.rss-content h2 { font-size: 1.25rem; }
-.rss-content h3 { font-size: 1.125rem; }
+[data-theme='warm'] .rss-content h1,
+[data-theme='warm'] .rss-content h2,
+[data-theme='warm'] .rss-content h3,
+[data-theme='warm'] .rss-content h4 {
+  color: #1E1B18;
+}
+
+.rss-content h1 { font-size: 1.75rem; }
+.rss-content h2 { font-size: 1.45rem; }
+.rss-content h3 { font-size: 1.25rem; }
 
 .rss-content ul, .rss-content ol {
-  margin-top: 0.75rem;
-  margin-bottom: 1.25rem;
-  padding-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1.75rem;
 }
 
 .rss-content ul {
@@ -154,3 +180,7 @@ html, body {
 .pulse-glow {
   animation: pulseGlow 1.5s infinite ease-in-out;
 }
+
+
+
+

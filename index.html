@@ -6,6 +6,139 @@
     <title>Clean Reader</title>
   </head>
   <body>
+    <!-- M3-Inspired Multi-stage Loading Splash Screen -->
+    <div id="app-splash-screen" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #F8F9FA;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999999;
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+      opacity: 0;
+      visibility: hidden;
+    ">
+      <div class="splash-container" style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      ">
+        <img 
+          id="splash-logo"
+          src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'><rect width='100' height='100' rx='28' fill='%234F46E5'/><text x='50' y='67' font-family='system-ui, -apple-system, sans-serif' font-size='56' font-weight='800' fill='%23FFFFFF' text-anchor='middle'>C</text></svg>" 
+          alt="Clean Reader Logo"
+          style="
+            width: 72px;
+            height: 72px;
+            transform: scale(0.85);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+          "
+        />
+        
+        <h1 id="splash-title" style="
+          font-family: system-ui, -apple-system, sans-serif;
+          font-size: 24px;
+          font-weight: 600;
+          color: #1F2937;
+          margin-top: 16px;
+          margin-bottom: 8px;
+          letter-spacing: -0.025em;
+          opacity: 0;
+          transform: translateY(12px);
+          transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+          transition-delay: 0.1s;
+        ">
+          Clean Reader
+        </h1>
+        
+        <p id="splash-subtext" style="
+          font-family: system-ui, -apple-system, sans-serif;
+          font-size: 13px;
+          color: #6B7280;
+          margin: 0;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          opacity: 0;
+          transform: translateY(8px);
+          transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+          transition-delay: 0.2s;
+        ">
+          Your RSS Feed Companion
+        </p>
+        
+        <div id="splash-loader" style="
+          margin-top: 32px;
+          width: 24px;
+          height: 24px;
+          border: 2.5px solid #E5E7EB;
+          border-top-color: #4F46E5;
+          border-radius: 50%;
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          animation: spin 0.8s linear infinite;
+        "></div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+
+    <script>
+      (function() {
+        const splash = document.getElementById("app-splash-screen");
+        const logo = document.getElementById("splash-logo");
+        const title = document.getElementById("splash-title");
+        const subtext = document.getElementById("splash-subtext");
+        const loader = document.getElementById("splash-loader");
+
+        if (splash) {
+          splash.style.opacity = "1";
+          splash.style.visibility = "visible";
+          
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              if (logo) {
+                logo.style.opacity = "1";
+                logo.style.transform = "scale(1)";
+              }
+              if (title) {
+                title.style.opacity = "1";
+                title.style.transform = "translateY(0)";
+              }
+              if (subtext) {
+                subtext.style.opacity = "1";
+                subtext.style.transform = "translateY(0)";
+              }
+              if (loader) {
+                loader.style.opacity = "1";
+              }
+            }, 50);
+          });
+
+          // Begin beautiful Material fade-out transition after 1600ms
+          setTimeout(() => {
+            splash.style.opacity = "0";
+            splash.style.visibility = "hidden";
+          }, 1600);
+
+          // Remove the elements from DOM completely at exactly 2000ms
+          setTimeout(() => {
+            splash.remove();
+          }, 2000);
+        }
+      })();
+    </script>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

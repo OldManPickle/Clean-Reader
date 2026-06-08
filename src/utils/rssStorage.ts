@@ -117,6 +117,48 @@ export async function getCachedArticles(): Promise<any[]> {
   });
 }
 
+/**
+ * Clears cached articles older than the specified number of days (default 30).
+ * @param days The age of articles to delete (default 30)
+ * @returns Number of successfully deleted items
+ */
+export async function clearExpiredCache(days: number = 30): Promise<number> {
+  const db = await initDB();
+  const allArticles = await getCachedArticles();
+  const now = Date.now();
+  const thresholdMs = days * 24 * 60 * 60 * 1000;
+  const limitDate = now - thresholdMs;
+
+  const expiredIds = allArticles
+    .filter(art => {
+      if (!art.pubDate) return false;
+      const parsed = Date.parse(art.pubDate);
+      return !isNaN(parsed) && parsed < limitDate;
+    })
+    .map(art => art.id);
+
+  if (expiredIds.length === 0) {
+    return 0;
+  }
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, "readwrite");
+    const store = transaction.objectStore(STORE_NAME);
+
+    expiredIds.forEach(id => {
+      store.delete(id);
+    });
+
+    transaction.oncomplete = () => {
+      resolve(expiredIds.length);
+    };
+
+    transaction.onerror = () => {
+      reject(transaction.error || new Error("Failed to clear expired articles from IndexedDB"));
+    };
+  });
+}
+
 
 // --- 3. CORS-enabled Fetcher (DOMParser & AllOrigins Proxy) ---
 

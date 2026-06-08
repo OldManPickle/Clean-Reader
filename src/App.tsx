@@ -13,7 +13,8 @@ import {
   init as clientLoadInit, 
   fetchFeed as clientFetchFeed, 
   cacheArticles, 
-  getCachedArticles 
+  getCachedArticles,
+  clearExpiredCache
 } from "./utils/rssStorage";
 
 // Premium Starter Seed Feeds to wow the user on first load
@@ -96,7 +97,13 @@ export default function App() {
     // Restore Settings
     const storedSettings = localStorage.getItem("rss_settings");
     if (storedSettings) {
-      try { setSettings(JSON.parse(storedSettings)); } catch(e) { console.error(e); }
+      try {
+        const parsed = JSON.parse(storedSettings);
+        if (parsed && parsed.theme === "dark") {
+          parsed.theme = "light";
+        }
+        setSettings(parsed);
+      } catch(e) { console.error(e); }
     }
 
     // Restore Read/Starred IDs
@@ -146,10 +153,24 @@ export default function App() {
     }
   }, [feeds.length]);
 
+  // Sync the system DOM attributes with the saved setting
+  useEffect(() => {
+    const html = document.documentElement;
+    html.setAttribute("data-theme", settings.theme === "dark" ? "light" : settings.theme);
+    html.classList.remove("dark");
+  }, [settings.theme]);
+
   // Persists settings to storage on update
   const handleUpdateSettings = (newSettings: AppSettings) => {
-    setSettings(newSettings);
-    localStorage.setItem("rss_settings", JSON.stringify(newSettings));
+    const updated = { ...newSettings };
+    if (updated.theme === "dark") {
+      updated.theme = "light";
+    }
+    setSettings(updated);
+    localStorage.setItem("rss_settings", JSON.stringify(updated));
+    const html = document.documentElement;
+    html.setAttribute("data-theme", updated.theme);
+    html.classList.remove("dark");
   };
 
   // Helper: Persists feeds list
@@ -385,6 +406,26 @@ export default function App() {
     showNotification(`Successfully marked ${activeIdsToMark.length} items as read!`, "success");
   };
 
+  // Clear expired cached items older than 30 days
+  const handleClearExpiredCache = async () => {
+    try {
+      const deletedCount = await clearExpiredCache(30);
+      
+      // Reload the remaining articles to make sure UI is up-to-date
+      const remaining = await getCachedArticles();
+      setArticles(remaining);
+
+      if (deletedCount > 0) {
+        showNotification(`Cleared ${deletedCount} expired cached articles older than 30 days from IndexedDB!`, "success");
+      } else {
+        showNotification("No expired articles older than 30 days were found in IndexedDB.", "info");
+      }
+    } catch (error) {
+      console.error("Failed to clear expired cache:", error);
+      showNotification("Error occurred while clearing expired cached items.", "error");
+    }
+  };
+
   // Compute Unread Counts dynamically per feed Url
   const unreadCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -485,8 +526,6 @@ export default function App() {
     switch (settings.theme) {
       case "warm":
         return "bg-warm-bg text-warm-text";
-      case "dark":
-        return "bg-[#090d16] text-[#cdd6f4] dark";
       default:
         return "bg-m3-surface text-m3-on-surface";
     }
@@ -518,6 +557,7 @@ export default function App() {
         onChangeSettings={handleUpdateSettings}
         activeLayout={activeLayout}
         onChangeLayout={setActiveLayout}
+        onClearExpiredCache={handleClearExpiredCache}
       />
 
       {/* 2. Primary Timeline Panel */}
@@ -635,7 +675,7 @@ export default function App() {
                       } ${
                         art.read 
                           ? "bg-m3-surface-variant/40 dark:bg-slate-900/10 hover:bg-m3-surface-variant dark:hover:bg-slate-900 border-m3-outline-variant/30 dark:border-slate-800/40" 
-                          : "bg-m3-surface dark:bg-slate-900 border-m3-outline-variant dark:border-slate-800 shadow-2xs hover:shadow-xs hover:border-indigo-300"
+                          : "bg-white dark:bg-slate-900 border-m3-outline-variant dark:border-slate-800 shadow-2xs hover:shadow-xs hover:border-indigo-300"
                       }`}
                     >
                       {/* Read status light dot */}
@@ -711,7 +751,7 @@ export default function App() {
                       } ${
                         art.read 
                           ? "bg-m3-surface-variant/40 border-m3-outline-variant/30 dark:bg-slate-900/10 dark:border-slate-800/40" 
-                          : "bg-m3-surface dark:bg-slate-900 border-m3-outline-variant dark:border-slate-800 shadow-2xs hover:shadow-xs hover:border-indigo-300"
+                          : "bg-white dark:bg-slate-900 border-m3-outline-variant dark:border-slate-800 shadow-2xs hover:shadow-xs hover:border-indigo-300"
                       }`}
                     >
                       <div>

@@ -225,18 +225,18 @@ export default function ImportExportModal({
   };
 
   return (
-    <div id="import-modal-overlay" className="fixed inset-0 bg-neutral-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-      <div id="import-modal-container" className="bg-white w-full max-w-3xl rounded-xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden border border-neutral-100">
+    <div id="import-modal-overlay" className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+      <div id="import-modal-container" className="bg-white dark:bg-slate-900 w-full max-w-3xl rounded-xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden border border-neutral-100 dark:border-slate-800">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-100 bg-neutral-50">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-100 dark:border-slate-800 bg-neutral-50 dark:bg-slate-850/50">
           <div>
-            <h2 className="font-sans font-semibold text-lg text-neutral-900">Add & Manage Content Feeds</h2>
-            <p className="text-xs text-neutral-500">Subscribe, bulk import URLs, or sync via OPML</p>
+            <h2 className="font-sans font-semibold text-lg text-neutral-900 dark:text-slate-100 font-sans">Add & Manage Content Feeds</h2>
+            <p className="text-xs text-neutral-500 dark:text-slate-400 font-sans">Subscribe, bulk import URLs, or sync via OPML</p>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 transition-colors cursor-pointer"
+            className="p-1 rounded-full text-neutral-400 hover:text-neutral-600 dark:hover:text-slate-205 hover:bg-neutral-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -244,20 +244,20 @@ export default function ImportExportModal({
 
         {/* Success Alert Banner */}
         {successMsg && (
-          <div className="mx-6 mt-4 p-3 bg-indigo-50 border border-indigo-100 text-indigo-805 text-xs rounded-lg flex items-center justify-between">
+          <div className="mx-6 mt-4 p-3 bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/60 text-indigo-805 dark:text-indigo-300 text-xs rounded-lg flex items-center justify-between">
             <span className="font-medium">{successMsg}</span>
             <Check size={14} className="text-indigo-600" />
           </div>
         )}
 
         {/* Modal Secondary Navigation */}
-        <div className="flex border-b border-slate-100 px-6 bg-slate-50/50">
+        <div className="flex border-b border-slate-100 dark:border-slate-800 px-6 bg-slate-50/50 dark:bg-slate-850/20">
           <button
             onClick={() => setActiveTab("discover")}
             className={`py-3 px-4 font-sans text-xs font-semibold border-b-2 transition-all cursor-pointer ${
               activeTab === "discover"
-                ? "border-indigo-600 text-indigo-700 font-bold"
-                : "border-transparent text-slate-500 hover:text-slate-800"
+                ? "border-indigo-600 text-indigo-700 dark:text-indigo-400 font-bold"
+                : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             }`}
           >
             Curated Discovery
@@ -266,8 +266,8 @@ export default function ImportExportModal({
             onClick={() => setActiveTab("manual")}
             className={`py-3 px-4 font-sans text-xs font-semibold border-b-2 transition-all cursor-pointer ${
               activeTab === "manual"
-                ? "border-indigo-600 text-indigo-700 font-bold"
-                : "border-transparent text-slate-500 hover:text-slate-800"
+                ? "border-indigo-600 text-indigo-700 dark:text-indigo-400 font-bold"
+                : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             }`}
           >
             Manual URL Add
@@ -276,8 +276,8 @@ export default function ImportExportModal({
             onClick={() => setActiveTab("bulk")}
             className={`py-3 px-4 font-sans text-xs font-semibold border-b-2 transition-all cursor-pointer ${
               activeTab === "bulk"
-                ? "border-indigo-600 text-indigo-700 font-bold"
-                : "border-transparent text-slate-500 hover:text-slate-800"
+                ? "border-indigo-600 text-indigo-700 dark:text-indigo-400 font-bold"
+                : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             }`}
           >
             Bulk URLs List
@@ -286,8 +286,8 @@ export default function ImportExportModal({
             onClick={() => setActiveTab("opml")}
             className={`py-3 px-4 font-sans text-xs font-semibold border-b-2 transition-all cursor-pointer ${
               activeTab === "opml"
-                ? "border-indigo-600 text-indigo-700 font-bold"
-                : "border-transparent text-slate-500 hover:text-slate-800"
+                ? "border-indigo-600 text-indigo-700 dark:text-indigo-400 font-bold"
+                : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             }`}
           >
             OPML Import/Export
@@ -301,34 +301,34 @@ export default function ImportExportModal({
           {activeTab === "discover" && (
             <div className="space-y-6">
               <div className="text-center max-w-md mx-auto py-2">
-                <Globe className="mx-auto text-indigo-600 mb-2" size={28} />
-                <h3 className="text-sm font-semibold text-neutral-800">Explore Curated RSS Feed presets</h3>
-                <p className="text-xs text-neutral-500">Pick feeds aligned with your topics of interest to populate your feeds list instantly.</p>
+                <Globe className="mx-auto text-indigo-600 dark:text-indigo-400 mb-2" size={28} />
+                <h3 className="text-sm font-semibold text-neutral-800 dark:text-slate-100">Explore Curated RSS Feed presets</h3>
+                <p className="text-xs text-neutral-500 dark:text-slate-400">Pick feeds aligned with your topics of interest to populate your feeds list instantly.</p>
               </div>
 
               {discoverLoading && (
                 <div className="flex flex-col items-center justify-center py-10 space-y-2">
-                  <RefreshCw className="animate-spin text-neutral-400" size={24} />
-                  <p className="text-xs text-neutral-500">Retrieving feed suggestions...</p>
+                  <RefreshCw className="animate-spin text-neutral-400 dark:text-slate-600" size={24} />
+                  <p className="text-xs text-neutral-500 dark:text-slate-400">Retrieving feed suggestions...</p>
                 </div>
               )}
 
               {discoverError && (
-                <div className="p-4 bg-red-50 text-red-700 border border-red-100 text-xs rounded-lg">
+                <div className="p-4 bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border border-red-100 dark:border-red-900/60 text-xs rounded-lg">
                   {discoverError}
                 </div>
               )}
 
               {!discoverLoading && !discoverError && curatedCategories.map((cat, idx) => (
-                <div key={idx} className="border border-neutral-100 rounded-lg p-4 space-y-4 shadow-xs bg-neutral-50/50">
+                <div key={idx} className="border border-neutral-100 dark:border-slate-800 rounded-lg p-4 space-y-4 shadow-xs bg-neutral-50/50 dark:bg-slate-850/40">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-sans font-semibold text-xs text-neutral-800 uppercase tracking-wider">{cat.category}</h4>
-                      <p className="text-xs text-neutral-500">{cat.description}</p>
+                      <h4 className="font-sans font-semibold text-xs text-neutral-800 dark:text-slate-200 uppercase tracking-wider">{cat.category}</h4>
+                      <p className="text-xs text-neutral-500 dark:text-slate-400">{cat.description}</p>
                     </div>
                     <button
                       onClick={() => subscribeAllCategory(cat)}
-                      className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 border border-indigo-100 hover:border-indigo-200 bg-white rounded px-2.5 py-1 cursor-pointer transition-colors"
+                      className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-350 border border-indigo-100 dark:border-indigo-900/60 hover:border-indigo-200 bg-white dark:bg-slate-900 rounded px-2.5 py-1 cursor-pointer transition-colors"
                     >
                       Subscribe to Category
                     </button>
@@ -338,22 +338,22 @@ export default function ImportExportModal({
                     {cat.feeds.map((feed, fIdx) => {
                       const subscribed = isSubscribed(feed.feedUrl);
                       return (
-                        <div key={fIdx} className="bg-white p-3 rounded-lg border border-neutral-200/60 flex flex-col justify-between">
+                        <div key={fIdx} className="bg-white dark:bg-slate-900 p-3 rounded-lg border border-neutral-200/60 dark:border-slate-800 flex flex-col justify-between">
                           <div>
-                            <span className="font-sans font-medium text-xs text-neutral-800 block">{feed.title}</span>
-                            <span className="text-neutral-400 text-[10px] block mb-1.5 truncate">{feed.feedUrl}</span>
-                            <p className="text-neutral-500 text-[11px] leading-relaxed line-clamp-2">{feed.description}</p>
+                            <span className="font-sans font-medium text-xs text-neutral-800 dark:text-slate-200 block">{feed.title}</span>
+                            <span className="text-neutral-400 dark:text-slate-500 text-[10px] block mb-1.5 truncate">{feed.feedUrl}</span>
+                            <p className="text-neutral-500 dark:text-slate-400 text-[11px] leading-relaxed line-clamp-2">{feed.description}</p>
                           </div>
                           
-                          <div className="flex items-center justify-end mt-3 border-t border-neutral-100 pt-2">
+                          <div className="flex items-center justify-end mt-3 border-t border-neutral-100 dark:border-slate-800 pt-2">
                             {subscribed ? (
-                              <span className="text-indigo-600 text-[11px] font-semibold flex items-center gap-1">
+                              <span className="text-indigo-600 dark:text-indigo-400 text-[11px] font-semibold flex items-center gap-1">
                                 <Check size={12} /> Subscribed
                               </span>
                             ) : (
                               <button
                                 onClick={() => toggleCuratedFeed(feed, cat.category)}
-                                className="text-[11px] font-semibold text-neutral-600 hover:text-indigo-600 hover:bg-neutral-50 px-2 py-1 rounded border border-neutral-200 cursor-pointer flex items-center gap-1 transition-colors"
+                                className="text-[11px] font-semibold text-neutral-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-neutral-50 dark:hover:bg-slate-800 px-2 py-1 rounded border border-neutral-200 dark:border-slate-700 cursor-pointer flex items-center gap-1 transition-colors"
                               >
                                 <Plus size={10} /> Add Feed
                               </button>
@@ -372,66 +372,66 @@ export default function ImportExportModal({
           {activeTab === "manual" && (
             <form onSubmit={handleManualSubscribe} className="space-y-4 max-w-lg mx-auto py-4">
               <div className="text-center py-2">
-                <Plus className="mx-auto text-indigo-600 mb-2" size={28} />
-                <h3 className="text-sm font-semibold text-neutral-800 font-sans">Enter a single Feed URL</h3>
-                <p className="text-xs text-neutral-500">Provide direct Atom, RSS or RDF xml endpoints.</p>
+                <Plus className="mx-auto text-indigo-600 dark:text-indigo-400 mb-2" size={28} />
+                <h3 className="text-sm font-semibold text-neutral-800 dark:text-slate-100 font-sans">Enter a single Feed URL</h3>
+                <p className="text-xs text-neutral-500 dark:text-slate-400">Provide direct Atom, RSS or RDF xml endpoints.</p>
               </div>
 
               {manualError && (
-                <div className="p-3 bg-red-50 text-red-700 border border-red-100 text-xs rounded-lg leading-relaxed">
+                <div className="p-3 bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border border-red-100 dark:border-red-900/40 text-xs rounded-lg leading-relaxed">
                   {manualError}
                 </div>
               )}
 
               <div className="space-y-3.5">
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1">Feed RSS/Atom Link</label>
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-slate-400 mb-1">Feed RSS/Atom Link</label>
                   <input
                     type="url"
                     required
                     placeholder="https://example.com/rss.xml"
                     value={manualUrl}
                     onChange={(e) => setManualUrl(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 dark:border-slate-800 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-slate-950 text-neutral-900 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1">Custom Title (Optional)</label>
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-slate-400 mb-1">Custom Title (Optional)</label>
                   <input
                     type="text"
                     placeholder="E.g. Engineering Blog (Auto-retrieved if blank)"
                     value={manualTitle}
                     onChange={(e) => setManualTitle(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 dark:border-slate-800 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-slate-950 text-neutral-900 dark:text-white"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1">Organize in Folder</label>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-slate-400 mb-1">Organize in Folder</label>
                     <select
                       value={manualCategory}
                       onChange={(e) => setManualCategory(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 dark:border-slate-800 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-slate-950 text-neutral-900 dark:text-white"
                     >
                       {categoriesList.map((cat, idx) => (
-                        <option key={idx} value={cat}>{cat}</option>
+                        <option key={idx} value={cat} className="dark:bg-slate-950">{cat}</option>
                       ))}
-                      <option value="NEW">+ Create New Folder...</option>
+                      <option value="NEW" className="dark:bg-slate-950">+ Create New Folder...</option>
                     </select>
                   </div>
 
                   {manualCategory === "NEW" && (
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1">New Folder name</label>
+                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-slate-400 mb-1">New Folder name</label>
                       <input
                         type="text"
                         required
                         placeholder="E.g. Creative"
                         value={newCategoryName}
                         onChange={(e) => setNewCategoryName(e.target.value)}
-                        className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white animate-fade-in"
+                        className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 dark:border-slate-800 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-slate-950 text-neutral-900 dark:text-white animate-fade-in"
                       />
                     </div>
                   )}
@@ -440,7 +440,7 @@ export default function ImportExportModal({
                 <button
                   type="submit"
                   disabled={manualLoading}
-                  className="w-full flex items-center justify-center bg-neutral-900 hover:bg-neutral-800 text-white font-semibold text-xs py-2.5 rounded-lg cursor-pointer transition-all disabled:opacity-50 mt-4 h-10"
+                  className="w-full flex items-center justify-center bg-neutral-900 hover:bg-neutral-800 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-semibold text-xs py-2.5 rounded-lg cursor-pointer transition-all disabled:opacity-50 mt-4 h-10"
                 >
                   {manualLoading ? (
                     <>
@@ -458,33 +458,33 @@ export default function ImportExportModal({
           {activeTab === "bulk" && (
             <div className="space-y-4 max-w-lg mx-auto py-2">
               <div className="text-center py-2">
-                <FileText className="mx-auto text-indigo-600 mb-2" size={28} />
-                <h3 className="text-sm font-semibold text-neutral-800 font-sans">Import Bulk Feeds</h3>
-                <p className="text-xs text-neutral-500">Paste multiple RSS link URL endpoints below — one per line.</p>
+                <FileText className="mx-auto text-indigo-600 dark:text-indigo-400 mb-2" size={28} />
+                <h3 className="text-sm font-semibold text-neutral-800 dark:text-slate-100 font-sans">Import Bulk Feeds</h3>
+                <p className="text-xs text-neutral-500 dark:text-slate-400">Paste multiple RSS link URL endpoints below — one per line.</p>
               </div>
 
               <div className="space-y-3.5">
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1">Feed list (URLs Only)</label>
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-slate-400 mb-1">Feed list (URLs Only)</label>
                   <textarea
                     rows={6}
                     placeholder="https://feed1.com/rss&#10;https://feed2.net/feed.xml&#10;https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
                     value={bulkText}
                     onChange={(e) => setBulkText(e.target.value)}
-                    className="w-full font-mono text-xs px-3 py-2 rounded-lg border border-neutral-200 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white resize-y"
+                    className="w-full font-mono text-xs px-3 py-2 rounded-lg border border-neutral-200 dark:border-slate-800 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-slate-950 text-neutral-900 dark:text-white resize-y"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1">Assign to Folder</label>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-slate-400 mb-1">Assign to Folder</label>
                     <select
                       value={bulkCategory}
                       onChange={(e) => setBulkCategory(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-neutral-200 dark:border-slate-800 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 focus:border-indigo-505 bg-white dark:bg-slate-950 text-neutral-900 dark:text-white"
                     >
                       {categoriesList.filter(c => c !== "NEW").map((cat, idx) => (
-                        <option key={idx} value={cat}>{cat}</option>
+                        <option key={idx} value={cat} className="dark:bg-slate-950">{cat}</option>
                       ))}
                     </select>
                   </div>
@@ -492,7 +492,7 @@ export default function ImportExportModal({
 
                 <button
                   onClick={handleBulkSubscribe}
-                  className="w-full bg-neutral-900 hover:bg-neutral-800 text-white font-semibold text-xs py-2.5 rounded-lg cursor-pointer transition-all mt-3 h-10"
+                  className="w-full bg-neutral-900 hover:bg-neutral-800 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-semibold text-xs py-2.5 rounded-lg cursor-pointer transition-all mt-3 h-10"
                 >
                   Import Feed List
                 </button>
@@ -504,19 +504,19 @@ export default function ImportExportModal({
           {activeTab === "opml" && (
             <div className="space-y-6 max-w-lg mx-auto py-2">
               <div className="text-center py-2">
-                <Upload className="mx-auto text-indigo-600 mb-2" size={28} />
-                <h3 className="text-sm font-semibold text-neutral-800 font-sans">Backup & Sync (OPML)</h3>
-                <p className="text-xs text-neutral-500">Universal standard format for migrating feeds between players (e.g. Feedly, NetNewsWire).</p>
+                <Upload className="mx-auto text-indigo-600 dark:text-indigo-400 mb-2" size={28} />
+                <h3 className="text-sm font-semibold text-neutral-800 dark:text-slate-100 font-sans">Backup & Sync (OPML)</h3>
+                <p className="text-xs text-neutral-500 dark:text-slate-400">Universal standard format for migrating feeds between players (e.g. Feedly, NetNewsWire).</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Importer */}
-                <div className="border border-dashed border-slate-200 hover:border-indigo-505 bg-slate-50/50 rounded-xl p-5 flex flex-col items-center justify-center text-center transition-colors">
-                  <Upload className="text-neutral-400 mb-2" size={20} />
-                  <span className="text-xs font-semibold text-neutral-800 mb-1">Import XML / OPML File</span>
-                  <p className="text-[10px] text-neutral-500 leading-normal mb-3">Load subscriptions lists exported from other readers.</p>
+                <div className="border border-dashed border-slate-200 dark:border-slate-805 hover:border-indigo-505 dark:hover:border-indigo-400 bg-slate-50/50 dark:bg-slate-850/30 rounded-xl p-5 flex flex-col items-center justify-center text-center transition-colors">
+                  <Upload className="text-neutral-400 dark:text-slate-500 mb-2" size={20} />
+                  <span className="text-xs font-semibold text-neutral-800 dark:text-slate-200 mb-1">Import XML / OPML File</span>
+                  <p className="text-[10px] text-neutral-505 dark:text-slate-400 leading-normal mb-3">Load subscriptions lists exported from other readers.</p>
                   
-                  <label className="bg-white hover:bg-neutral-50 border border-neutral-200 text-[11px] font-semibold px-3 py-1.5 rounded cursor-pointer transition-all shadow-xs">
+                  <label className="bg-white dark:bg-slate-900 hover:bg-neutral-50 dark:hover:bg-slate-800 border border-neutral-200 dark:border-slate-800 text-[11px] font-semibold px-3 py-1.5 rounded cursor-pointer transition-all shadow-xs text-neutral-800 dark:text-slate-200">
                     Choose File
                     <input
                       type="file"
@@ -528,21 +528,21 @@ export default function ImportExportModal({
                 </div>
 
                 {/* Exporter */}
-                <div className="border border-neutral-150 bg-neutral-50/50 rounded-xl p-5 flex flex-col items-center justify-center text-center">
-                  <Download className="text-neutral-400 mb-2" size={20} />
-                  <span className="text-xs font-semibold text-neutral-800 mb-1">Export Backup File</span>
-                  <p className="text-[10px] text-neutral-500 leading-normal mb-3">Save your subscriptions cleanly containing folder classifications.</p>
+                <div className="border border-neutral-150 dark:border-slate-805 bg-neutral-50/50 dark:bg-slate-850/30 rounded-xl p-5 flex flex-col items-center justify-center text-center">
+                  <Download className="text-neutral-400 dark:text-slate-500 mb-2" size={20} />
+                  <span className="text-xs font-semibold text-neutral-800 dark:text-slate-200 mb-1">Export Backup File</span>
+                  <p className="text-[10px] text-neutral-505 dark:text-slate-400 leading-normal mb-3">Save your subscriptions cleanly containing folder classifications.</p>
                   
                   <div className="flex gap-2 w-full justify-center">
                     <button
                       onClick={handleExportOPML}
-                      className="bg-white hover:bg-neutral-50 border border-neutral-200 text-[11px] font-semibold px-2.5 py-1.5 rounded cursor-pointer transition-all shadow-xs flex items-center gap-1"
+                      className="bg-white dark:bg-slate-900 hover:bg-neutral-50 dark:hover:bg-slate-800 border border-neutral-200 dark:border-slate-800 text-[11px] font-semibold px-2.5 py-1.5 rounded cursor-pointer transition-all shadow-xs flex items-center gap-1 text-neutral-800 dark:text-slate-200"
                     >
                       <FileText size={12} /> OPML
                     </button>
                     <button
                       onClick={handleExportJSON}
-                      className="bg-white hover:bg-neutral-50 border border-neutral-200 text-[11px] font-semibold px-2.5 py-1.5 rounded cursor-pointer transition-all shadow-xs flex items-center gap-1"
+                      className="bg-white dark:bg-slate-900 hover:bg-neutral-50 dark:hover:bg-slate-800 border border-neutral-200 dark:border-slate-800 text-[11px] font-semibold px-2.5 py-1.5 rounded cursor-pointer transition-all shadow-xs flex items-center gap-1 text-neutral-800 dark:text-slate-200"
                     >
                       <Download size={12} /> JSON
                     </button>
@@ -550,8 +550,8 @@ export default function ImportExportModal({
                 </div>
               </div>
 
-              <div id="opml-stats" className="bg-neutral-50 border border-neutral-150 rounded-lg p-3 text-[11px] text-neutral-500">
-                <span className="font-semibold text-neutral-700 block mb-1">What is OPML?</span>
+              <div id="opml-stats" className="bg-neutral-50 dark:bg-slate-850/50 border border-neutral-150 dark:border-slate-800 rounded-lg p-3 text-[11px] text-neutral-500 dark:text-slate-400">
+                <span className="font-semibold text-neutral-700 dark:text-slate-200 block mb-1">What is OPML?</span>
                 XML-based tree lists containing source feed hyperlinks grouped under folder nodes. Importing OPML immediately restores your curated structure.
               </div>
             </div>
@@ -560,13 +560,13 @@ export default function ImportExportModal({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-neutral-100 px-6 py-4 flex items-center justify-between bg-neutral-50">
-          <span className="text-[10px] text-neutral-450">
-            Currently tracking <strong className="text-neutral-600">{existingFeeds.length} feeds</strong>
+        <div className="border-t border-neutral-100 dark:border-slate-800 px-6 py-4 flex items-center justify-between bg-neutral-50 dark:bg-slate-850/50">
+          <span className="text-[10px] text-neutral-450 dark:text-slate-400">
+            Currently tracking <strong className="text-neutral-600 dark:text-slate-200">{existingFeeds.length} feeds</strong>
           </span>
           <button
             onClick={onClose}
-            className="bg-neutral-900 border border-neutral-800 hover:bg-neutral-800 text-white font-semibold text-xs px-4 py-2 rounded-lg cursor-pointer transition-colors"
+            className="bg-neutral-900 dark:bg-indigo-600 hover:bg-neutral-800 dark:hover:bg-indigo-500 text-white font-semibold text-xs px-4 py-2 rounded-lg cursor-pointer transition-colors"
           >
             Close Panel
           </button>
