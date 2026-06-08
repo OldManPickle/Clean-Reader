@@ -1,0 +1,6 @@
+{
+  "name": "Clean Reader",
+  "description": "A premium, fully-featured RSS and Atom feed reader. Import bulk feeds, discover curated feeds, organize folders, search articles, and read uninterrupted.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

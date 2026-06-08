@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: "Lora", Georgia, Cambria, serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  /* Subtle Material Design 3 Muted Palette Overrides */
+  --color-indigo-50: #f0f4f6;
+  --color-indigo-100: #e1ebef;
+  --color-indigo-500: #5d6d7e;
+  --color-indigo-600: #4a6572;
+  --color-indigo-700: #3f5460;
+  --color-indigo-800: #2c3e50;
+  --color-indigo-900: #202d3a;
+  --color-indigo-950: #141c24;
+  --color-indigo-650: #4a6572;
+
+  --color-m3-surface: #f8f9fa;
+  --color-m3-surface-variant: #e9ecef;
+  --color-m3-on-surface: #2c3e50;
+  --color-m3-on-surface-variant: #5d6d7e;
+  --color-m3-outline-variant: #dee2e6;
+  
+  /* Additional themed colors if helpful */
+  --color-warm-bg: #FAF6EE;
+  --color-warm-card: #F4EFE6;
+  --color-warm-text: #2D2A26;
+  --color-warm-border: #E8DFCB;
+}
+
+/* Base resets & custom smooth-scrolling */
+html, body {
+  background-color: var(--color-m3-surface);
+  font-family: var(--font-sans);
+  color: var(--color-m3-on-surface);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars for high-density feeds list */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
+}
+
+/* High-quality styled RSS content elements so articles look gorgeous & read like books */
+.rss-content {
+  line-height: 1.75;
+}
+
+.rss-content p {
+  margin-bottom: 1.25rem;
+}
+
+.rss-content a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.rss-content a:hover {
+  color: #1d4ed8;
+}
+
+.rss-content img {
+  border-radius: 0.5rem;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.rss-content blockquote {
+  border-left: 4px solid #d1d5db;
+  padding-left: 1.25rem;
+  font-style: italic;
+  color: #4b5563;
+  margin: 1.5rem 0;
+}
+
+.rss-content h1, .rss-content h2, .rss-content h3, .rss-content h4 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: -0.025em;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.rss-content h1 { font-size: 1.5rem; }
+.rss-content h2 { font-size: 1.25rem; }
+.rss-content h3 { font-size: 1.125rem; }
+
+.rss-content ul, .rss-content ol {
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.rss-content ul {
+  list-style-type: disc;
+}
+
+.rss-content ol {
+  list-style-type: decimal;
+}
+
+.rss-content li {
+  margin-bottom: 0.5rem;
+}
+
+.rss-content pre, .rss-content code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background-color: rgba(0, 0, 0, 0.04);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+}
+
+.rss-content pre {
+  display: block;
+  overflow-x: auto;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 0.5rem;
+}
+
+.rss-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Animations and helper utilities */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.pulse-glow {
+  animation: pulseGlow 1.5s infinite ease-in-out;
+}
